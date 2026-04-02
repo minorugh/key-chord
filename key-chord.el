@@ -181,8 +181,6 @@ Commands. Please ignore that."
                    key-chord-two-keys-delay)))
       (cond ((if executing-kbd-macro
                  (not (memq first-char key-chord-in-last-kbd-macro))
-               (when (bound-and-true-p eldoc-mode)
-                 (eldoc-pre-command-refresh-echo-area))
                (sit-for delay 'no-redisplay))
              (setq key-chord-last-unmatched nil)
              (list first-char))
