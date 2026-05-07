@@ -399,7 +399,11 @@ FIRST-CHAR is the first character input by the user."
        ;; Continue with chord detection for keys that might be part of a chord
        ((not (eq first-char key-chord-last-unmatched))
         (key-chord-pause-typing-flow) ;; Temporarily exit typing flow for chord detection
-        (let ((res (key-chord-lookup-key (vector 'key-chord first-char))))
+        (let ((res (or (key-chord-lookup-key (vector 'key-chord first-char))
+                       ;; Emacs 30+: prefix node may only exist for the
+                       ;; lower-code key; also check same-key to detect
+                       ;; whether first-char heads any registered chord.
+                       (key-chord-lookup-key (vector 'key-chord first-char first-char)))))
           (if (not res)
               (key-chord-no-chord first-char)
             (let ((start-time (current-time))
@@ -433,8 +437,12 @@ FIRST-CHAR is the first character input by the user."
 
                  ;; Handle two different keys
                  (t
-                  ;; Check if this is a valid two-key chord
-                  (if (key-chord-lookup-key (vector 'key-chord first-char next-char))
+                  ;; Check if this is a valid two-key chord.
+                  ;; Try both key orders: define registers both directions,
+                  ;; but Emacs 30+ prefix nodes may not resolve the
+                  ;; higher-code-first direction without explicit lookup.
+                  (if (or (key-chord-lookup-key (vector 'key-chord first-char next-char))
+                          (key-chord-lookup-key (vector 'key-chord next-char first-char)))
                       (key-chord-execute-chord first-char next-char)
                     ;; Not a valid chord
                     (key-chord-no-chord first-char next-char)))))))))
