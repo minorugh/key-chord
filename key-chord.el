@@ -181,7 +181,8 @@ Commands. Please ignore that."
                    key-chord-two-keys-delay)))
       (cond ((if executing-kbd-macro
                  (not (memq first-char key-chord-in-last-kbd-macro))
-               (sit-for delay 'no-redisplay))
+               ;; (sit-for delay 'no-redisplay))
+               (sit-for delay nil))
              (setq key-chord-last-unmatched nil)
              (list first-char))
             (t ; input-pending-p
