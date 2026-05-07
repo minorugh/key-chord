@@ -8,6 +8,9 @@
 ;; Package-Revision: fc75b1451759
 ;; Package-Requires: ((emacs "24"))
 ;; Keywords: keyboard chord input
+;; Modified: 2025-05-08 Minoru Yamada & Claude (Anthropic)
+;;           sit-for -> read-event timeout to fix stalling
+;;           (original: 20240910.1441 / MELPA)
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
